@@ -1,0 +1,69 @@
+.col {
+    margin-bottom: 2rem;
+    padding: 0 15px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.card {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.CardImgWrapper {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.CardImgTop {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.CardBody {
+   text-align: center;
+   padding: 0.5rem;
+}
+
+.CardTitle {
+    font-size: 1rem;
+    color: black;
+    /* font-weight: bold; */
+    margin-bottom: 0.25rem;
+}
+
+.CardText {
+    font-size: 0.9rem;
+    color: black;
+}
+
+.placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholderText {
+    font-size: 5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* color: #6c757d; Bootsrap's text-muted color */ 
