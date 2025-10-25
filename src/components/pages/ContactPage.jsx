@@ -38,7 +38,7 @@ const ContactPage = () => {
             <h1 className="mb-4">Contact Us</h1>
             <p className="lead mb-4">
               Have a question or feedback? We'd love to hear from you. 
-              Fill out the form below and we'll get back to you as soon as possible.
+              Fill out the form below and Juniot Junior will get back to you as soon as possible.
             </p>
 
             <div className="card">
@@ -152,8 +152,8 @@ const ContactPage = () => {
                   Email
                 </h5>
                 <p className="card-text">
-                  <a href="mailto:support@shoppit.com">support@shoppit.com</a><br />
-                  <a href="mailto:info@shoppit.com">info@shoppit.com</a>
+                  <strong>Juniot Junior</strong><br />
+                  <a href="mailto:juni@gmail.com">juni@gmail.com</a>
                 </p>
               </div>
             </div>

@@ -1,0 +1,178 @@
+/* Global CSS Reset and Mobile Optimization */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Prevent font size adjustments on orientation change */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Prevent images from overflowing */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Make sure containers don't overflow */
+.container,
+.container-fluid {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Improve touch targets on mobile */
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 44px; /* iOS recommended touch target size */
+  touch-action: manipulation; /* Disable double-tap zoom */
+}
+
+/* Prevent text from being too small on mobile */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* Prevents iOS zoom on input focus */
+  }
+  
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevents iOS zoom on input focus */
+  }
+}
+
+/* Ensure Bootstrap responsive utilities work */
+@media (max-width: 576px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+/* Fix for mobile Safari address bar */
+@supports (-webkit-touch-callout: none) {
+  body {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Prevent layout shift */
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Ensure cards and images are responsive */
+.card-img-top,
+.card-img,
+.img-fluid {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Mobile-friendly spacing */
+@media (max-width: 768px) {
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  .my-5 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+}
+
+/* Prevent horizontal overflow from animations */
+* {
+  overflow-anchor: none;
+}
+
+/* Better mobile form styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Improve mobile button spacing */
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* Fix for sticky navbar on mobile */
+.sticky-top,
+nav.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+/* Prevent content from going under navbar on mobile */
+body {
+  padding-top: 0;
+}
+
+/* Ensure modals work properly on mobile */
+.modal {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better mobile table display */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
