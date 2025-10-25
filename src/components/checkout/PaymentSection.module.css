@@ -1,0 +1,27 @@
+.payment-section {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.payment-section h5 {
+  font-weight: 600;
+  color: #212529;
+}
+
+.payment-section .btn {
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.payment-section .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.payment-section .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

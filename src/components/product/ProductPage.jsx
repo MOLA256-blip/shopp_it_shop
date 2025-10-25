@@ -3,6 +3,7 @@ import ProductPagePlaceholder from "./ProductPagePlaceHolder"
 import RelatedProduct from "./RelatedProduct"
 import { useEffect, useState } from "react"
 import api from "../../api"
+import { useCart } from "../../context/CartContext"
 
 
 const ProductPage = () => {
@@ -11,6 +12,7 @@ const ProductPage = () => {
     const [product, setProduct] = useState({})
     const [loading, setLoading] = useState(false)
     const [similarProducts, setSimilarProducts] = useState([])
+    const { addItem } = useCart()
 
     useEffect(function(){
         setLoading(true)
@@ -28,28 +30,10 @@ const ProductPage = () => {
      })
     }, [slug])
 
-    // Simple non-functional add to cart
-    function add_item(){
-      const cartCode = localStorage.getItem('cart_code') || ''
-      api.post('/api/add_item/', {
-        cart_mode: cartCode,
-        product_id: product.id
-      })
-      .then(res => {
-        // Update cart code if new one was created
-        if(res.data.cart_code) {
-          localStorage.setItem('cart_code', res.data.cart_code)
-        }
-        console.log('Item added to cart')
-      })
-      .catch(err => {
-        console.error('Error adding to cart:', err)
-        // Handle invalid cart by clearing and retrying
-        if(err.response?.status === 400 && err.response.data?.includes('Invalid cart')) {
-          localStorage.removeItem('cart_code')
-          add_item() // Retry with new cart
-        }
-      })
+    // Add to cart using centralized cart context
+    function handleAddToCart(){
+      if (!product?.id) return
+      addItem(product.id, 1)
     }
 
   if(loading) {
@@ -83,7 +67,7 @@ const ProductPage = () => {
                     <div className="d-flex">
                         <button className="btn btn-outline-dark flex-shrink-0"
                          type="button"
-                         onClick={add_item}>
+                         onClick={handleAddToCart}>
                          <i className="bi-cart-fill me-1"></i>
                          Add to Cart
                          </button>

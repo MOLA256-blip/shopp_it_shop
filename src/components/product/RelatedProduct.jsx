@@ -2,7 +2,6 @@ import HomeCard from '../home/HomeCard'
 
 
 const RelatedProduct = ({ products }) => {
-  console.log('RelatedProduct received:', products)
   if (!products || products.length === 0) {
     return null;
   }

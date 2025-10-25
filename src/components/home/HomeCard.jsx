@@ -9,8 +9,6 @@ const HomeCard = ({ product }) => {
     return null
   }
 
-  console.log('Loading image:', product.image);
-
   return (
     <div className={styles.col}>
         <Link to={`/products/${product.slug}`} className={styles.link}>
@@ -21,7 +19,6 @@ const HomeCard = ({ product }) => {
                       className={styles.CardImgTop}
                       alt={product.name}
                       onError={(e) => {
-                        console.error('Image failed to load:', product.image);
                         e.target.src = "https://dummyimage.com/600x700/dee2e6/6c757d.jpg";
                       }}
                     />
