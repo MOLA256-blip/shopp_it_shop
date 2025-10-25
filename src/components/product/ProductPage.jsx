@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import ProductPagePlaceholder from "./ProductPagePlaceHolder"
 import RelatedProduct from "./RelatedProduct"
 import { useEffect, useState } from "react"
@@ -9,6 +9,7 @@ import { useCart } from "../../context/CartContext"
 const ProductPage = () => {
 
     const {slug} =useParams()
+    const navigate = useNavigate()
     const [product, setProduct] = useState({})
     const [loading, setLoading] = useState(false)
     const [similarProducts, setSimilarProducts] = useState([])
@@ -31,9 +32,11 @@ const ProductPage = () => {
     }, [slug])
 
     // Add to cart using centralized cart context
-    function handleAddToCart(){
+    async function handleAddToCart(){
       if (!product?.id) return
-      addItem(product.id, 1)
+      await addItem(product.id, 1)
+      // Navigate to cart page after adding item
+      navigate('/cart')
     }
 
   if(loading) {

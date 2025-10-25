@@ -17,6 +17,18 @@ const Navbar = () => {
     <nav className={`navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 ${styles.stickyNavbar}`}>
     <div className= "container">
         <Link className="navbar-brand fw-bold text-uppercase" to="/">SHOPPIT</Link>
+        
+        {/* Cart button - visible on all screen sizes */}
+        <Link  to="/cart" className={`btn btn-dark rounded-pill position-relative ${styles.cartButton}`}>
+            <FaCartShopping />
+            <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary text-white"
+                style={{fontSize: '0.75rem', padding: '0.35em 0.5em'}}
+                >
+            {cartCount > 0 ? cartCount : null}
+            </span>
+        </Link>
+
         <button
             className="navbar-toggler"
             type="button"
@@ -30,15 +42,6 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarContent">
             <NavBarLink />
-            <Link  to="/cart" className={`btn btn-dark ms-3 rounded-pill position-relative ${styles.responsiveCart}`}>
-            <FaCartShopping />
-            <span
-                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary text-white"
-                style={{fontSize: '0.75rem', padding: '0.35em 0.5em'}}
-                >
-            {cartCount > 0 ? cartCount : null}
-            </span>
-            </Link>
         </div>
         </div>
     </nav>
