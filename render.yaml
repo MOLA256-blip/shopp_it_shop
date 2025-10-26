@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: shoppit-frontend
+    runtime: node
+    plan: free
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npm run preview
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: VITE_FLUTTERWAVE_PUBLIC_KEY
+        sync: false
+      - key: VITE_BASE_URL
+        sync: false
