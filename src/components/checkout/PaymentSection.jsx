@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useFlutterwave, closePaymentModal } from 'flutterwave-react-v3'
 import api from '../../api'
 import './PaymentSection.module.css'
+
+const FLUTTERWAVE_PUBLIC_KEY = import.meta.env.VITE_FLUTTERWAVE_PUBLIC_KEY || 'FLWPUBK_TEST-509fa4d386a258410a2579e8b4d12474-X'
 
 const PaymentSection = ({ cartCode, totalAmount }) => {
   const [loading, setLoading] = useState(false)
@@ -10,40 +13,88 @@ const PaymentSection = ({ cartCode, totalAmount }) => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [transactionId, setTransactionId] = useState('')
 
-  async function handleFlutterwavePayment(method = 'card') {
+  // Get user info from localStorage
+  const getUserInfo = () => {
     try {
-      setLoading(true)
-      setError('')
-      
-      console.log('Initiating Flutterwave payment with cart:', cartCode, 'method:', method)
-      
-      const res = await api.post('/api/payments/flutterwave/initiate/', {
-        cart_code: cartCode,
-        payment_method: method
-      })
-      
-      console.log('Flutterwave response:', res.data)
-      
-      if (res.data.payment_link) {
-        window.location.href = res.data.payment_link
-      } else {
-        setError('No payment link received from server')
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        return {
+          email: user.email || 'customer@example.com',
+          name: user.username || 'Customer',
+          phone: user.phone_number || ''
+        }
       }
-    } catch (err) {
-      console.error('Flutterwave payment error:', err)
-      
-      if (err.code === 'ERR_NETWORK') {
-        setError('Network error: Cannot connect to server. Please check if the backend is running.')
-      } else if (err.response) {
-        setError(err.response?.data?.error || err.response?.data?.detail || 'Payment initiation failed')
-      } else if (err.request) {
-        setError('No response from server. Please check your connection.')
-      } else {
-        setError(err.message || 'Payment initiation failed')
-      }
-    } finally {
-      setLoading(false)
+    } catch (e) {
+      console.error('Error parsing user info:', e)
     }
+    return {
+      email: 'customer@example.com',
+      name: 'Customer',
+      phone: ''
+    }
+  }
+
+  const userInfo = getUserInfo()
+
+  // Flutterwave configuration
+  const config = {
+    public_key: FLUTTERWAVE_PUBLIC_KEY,
+    tx_ref: `${cartCode}-${Date.now()}`,
+    amount: totalAmount,
+    currency: 'USD',
+    payment_options: 'card,mobilemoney,ussd,banktransfer',
+    customer: {
+      email: userInfo.email,
+      phone_number: userInfo.phone,
+      name: userInfo.name,
+    },
+    customizations: {
+      title: 'Shoppit Payment',
+      description: `Payment for cart ${cartCode}`,
+      logo: 'https://your-logo-url.com/logo.png',
+    },
+  }
+
+  const handleFlutterwave = useFlutterwave(config)
+
+  async function handleFlutterwavePayment() {
+    setLoading(true)
+    setError('')
+    
+    handleFlutterwave({
+      callback: async (response) => {
+        console.log('Flutterwave payment response:', response)
+        closePaymentModal()
+        
+        if (response.status === 'successful') {
+          // Verify payment with backend
+          try {
+            const res = await api.post('/api/payments/flutterwave/callback/', {
+              status: 'successful',
+              tx_ref: response.tx_ref,
+              transaction_id: response.transaction_id
+            })
+            
+            if (res.data.success) {
+              window.location.href = `/payment/status?status=success&tx_ref=${response.tx_ref}&transaction_id=${response.transaction_id}`
+            } else {
+              setError('Payment verification failed. Please contact support.')
+            }
+          } catch (err) {
+            console.error('Verification error:', err)
+            setError('Payment verification failed. Please contact support.')
+          }
+        } else {
+          setError('Payment was not completed. Please try again.')
+        }
+        setLoading(false)
+      },
+      onClose: () => {
+        console.log('Payment modal closed')
+        setLoading(false)
+      },
+    })
   }
 
   function handleMobileMoneyClick(provider) {
@@ -168,7 +219,7 @@ const PaymentSection = ({ cartCode, totalAmount }) => {
         {/* Flutterwave Payment */}
         <button 
           className="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2" 
-          onClick={() => handleFlutterwavePayment('card')}
+          onClick={handleFlutterwavePayment}
           disabled={loading}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
